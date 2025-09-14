@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Hub - Login</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Arial', sans-serif; background-color: white; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .container { background-color: white; border-radius: 15px; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); padding: 40px; width: 100%; max-width: 400px; }
+        .title-container { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 30px; }
+        .title { font-size: 32px; color: black; }
+        .scholarship-logo { width: 40px; height: 40px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { font-size: 16px; color: black; margin-bottom: 8px; display: block; }
+        .form-group input, .form-group select { width: 100%; padding: 12px; font-size: 16px; border: 2px solid #ddd; border-radius: 8px; outline: none; transition: 0.3s; }
+        .form-group input:focus, .form-group select:focus { border-color: #007bff; }
+        .error-msg { color: red; font-size: 14px; text-align: left; display: none; margin-top: 5px; }
+        .submit-btn { background-color: #007bff; color: white; width: 100%; padding: 15px; font-size: 18px; border: none; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        .submit-btn:hover { background-color: #0056b3; }
+        .link { margin-top: 15px; font-size: 14px; text-align: center; }
+        .link a { color: #007bff; text-decoration: none; }
+        .link a:hover { text-decoration: underline; }
+        #role-group { display: none; }
+        .server-error { color: red; font-size: 14px; text-align: center; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title-container">
+            <img src="scholarship-logo.png" alt="Scholarship Logo" class="scholarship-logo">
+            <h2 class="title">Student Hub</h2>
+        </div>
+
+        <div id="server-error-container" class="server-error" style="display:none;"></div>
+
+        <form id="login-form" method="POST" action="<%= request.getContextPath() %>/LoginServlet">
+            <div class="form-group">
+                <label for="email">Username</label>
+                <input type="email" id="email" name="email" placeholder="user@cvr.ac.in" required>
+                <p class="error-msg" id="email-error">Username doesn't exist.</p>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <p class="error-msg" id="password-error">Incorrect username or password.</p>
+            </div>
+            <div class="form-group" id="role-group">
+                <label for="role">Login as</label>
+                <select id="role" name="role">
+                    <option value="admin">🔒 Admin</option>
+                    <option value="student">🎓 Student</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-btn">Login</button>
+        </form>
+        <div class="link">
+            <p>Don't have an account? <a href="create_account.html">Create Account</a></p>
+            <p><a href="forgot_password.html">Forgot your password?</a></p>
+        </div>
+    </div>
+
+    <script>
+        const specialUsernames = ["23B81A05K3@cvr.ac.in", "23B81A05K9@cvr.ac.in", "23B81A05M8@cvr.ac.in"];
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const roleGroup = document.getElementById("role-group");
+        const roleSelect = document.getElementById("role");
+        const emailError = document.getElementById("email-error");
+        const passwordError = document.getElementById("password-error");
+        const serverErrorContainer = document.getElementById("server-error-container");
+
+        // Retrieve server error message if it exists
+        const errorMessage = "<%= request.getAttribute("errorMessage") %>";
+        if (errorMessage && errorMessage.trim() !== "null") {
+            serverErrorContainer.textContent = errorMessage;
+            serverErrorContainer.style.display = "block";
+        }
+
+        function checkSpecialUser(username) {
+            return specialUsernames.includes(username);
+        }
+
+        emailInput.addEventListener("input", () => {
+            const username = emailInput.value.trim();
+            if (checkSpecialUser(username)) {
+                roleGroup.style.display = "block";
+            } else {
+                roleGroup.style.display = "none";
+            }
+            emailError.style.display = "none";
+            passwordError.style.display = "none";
+            serverErrorContainer.style.display = "none"; // Clear server error on input
+        });
+
+        document.getElementById("login-form").addEventListener("submit", function(e) {
+            const username = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            emailError.style.display = "none";
+            passwordError.style.display = "none";
+            serverErrorContainer.style.display = "none"; // Clear server error on submit attempt
+
+            const isSpecial = checkSpecialUser(username);
+            const isEmailValid = username.endsWith("@cvr.ac.in") || isSpecial;
+
+            if (!isEmailValid) {
+                emailError.style.display = "block";
+                e.preventDefault();
+                return;
+            }
+
+            // Check if password is empty
+            if (password.trim() === "") {
+                passwordError.style.display = "block";
+                e.preventDefault();
+                return;
+            }
+
+            // Validate with the server if it's a regular email
+            if (!isSpecial && username.endsWith("@cvr.ac.in")) {
+                fetch(`<%= request.getContextPath() %>/check-email?email=${encodeURIComponent(username)}`)
+                    .then(response => response.text())
+                    .then(data => {
+                        if (data.trim() === "not exists") {
+                            emailError.style.display = "block";
+                            e.preventDefault();
+                        } else {
+                            // Let the form submit
+                            document.getElementById("login-form").submit();
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error checking email:", error);
+                        // Let the form submit if there's an error checking
+                        document.getElementById("login-form").submit();
+                    });
+
+                e.preventDefault(); // Prevent default submission during async check
+            }
+            // For special users, let the form submit normally
+        });
+    </script>
+</body>
+</html>

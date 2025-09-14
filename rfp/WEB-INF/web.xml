@@ -1,0 +1,77 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                             http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+
+    <!-- Welcome file list -->
+    <welcome-file-list>
+        <welcome-file>login.html</welcome-file>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <!-- Servlet for RegisterServlet -->
+    <servlet>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>RegisterServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterServlet</servlet-name>
+        <url-pattern>/createAccount</url-pattern>
+    </servlet-mapping>
+
+    <!-- Servlet for LoginServlet -->
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet</url-pattern>
+    </servlet-mapping>
+   
+    <!-- Servlet for CheckEmailServlet -->
+    <servlet>
+        <servlet-name>CheckEmailServlet</servlet-name>
+        <servlet-class>CheckEmailServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CheckEmailServlet</servlet-name>
+        <url-pattern>/check-email</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetItemsServlet</servlet-name>
+        <servlet-class>GetItemsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetItemsServlet</servlet-name>
+        <url-pattern>/GetItemsServlet</url-pattern>
+    </servlet-mapping>
+        
+    <!-- JarScanner configuration -->
+    <context-param>
+        <param-name>org.apache.tomcat.util.scan.StandardJarScanFilter.jarsToSkip</param-name>
+        <param-value>*.jar</param-value>
+    </context-param>
+
+    <!-- Servlet for ItemUploadServlet -->
+    <servlet>
+        <servlet-name>ItemUploadServlet</servlet-name>
+        <servlet-class>ItemUploadServlet</servlet-class>
+        <multipart-config>
+            <max-file-size>20971520</max-file-size> <!-- 20 MB -->
+            <max-request-size>41943040</max-request-size> <!-- 40 MB -->
+            <file-size-threshold>1048576</file-size-threshold> <!-- 1 MB -->
+        </multipart-config>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ItemUploadServlet</servlet-name>
+        <url-pattern>/ItemUploadServlet</url-pattern>
+    </servlet-mapping>
+    
+    <listener>
+        <listener-class>MyServletContextListener</listener-class>
+    </listener>
+
+</web-app>

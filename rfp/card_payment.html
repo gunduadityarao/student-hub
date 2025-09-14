@@ -1,0 +1,84 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Payment - Student Hub</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .payment-container {
+            background-color: white;
+            color: black;
+            padding: 20px;
+            border-radius: 8px;
+            width: 250px;
+            text-align: center;
+        }
+
+        .payment-container input {
+            width: 80%;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        .pay-btn {
+            background-color: #FF9900;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .pay-btn:hover {
+            background-color: #e68a00;
+        }
+    </style>
+</head>
+<body>
+
+<div class="payment-container">
+    <h2>Card Payment</h2>
+    <p>Enter your card details:</p>
+    <input type="text" id="card-number" placeholder="Card Number">
+    <input type="text" id="card-expiry" placeholder="MM/YY">
+    <input type="text" id="card-cvv" placeholder="CVV">
+    <button class="pay-btn" id="card-pay-btn">Pay Now</button>
+</div>
+
+<script>
+    document.getElementById("card-pay-btn").addEventListener("click", function() {
+        const cardNumber = document.getElementById("card-number").value;
+        const expiry = document.getElementById("card-expiry").value;
+        const cvv = document.getElementById("card-cvv").value;
+
+        if (!cardNumber || !expiry || !cvv) {
+            alert("Please enter valid card details.");
+            return;
+        }
+
+        alert(`Card Payment initiated for Card: ${cardNumber}`);
+        // Here, you can integrate a real card payment gateway.
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Item</title>
+    <style>
+        body {
+            background-color: #f4f8fb;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #444;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 25px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #cashMessage {
+            font-weight: bold;
+            color: #2b7a2b;
+            background-color: #e6f4e6;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .help-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: -20px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Upload Item</h1>
+    <div class="container">
+<form id="uploadForm" action="ItemUploadServlet" method="post" enctype="multipart/form-data">
+
+            <label for="itemName">Item Name</label>
+            <input type="text" id="itemName" name="itemName" required>
+
+            <label for="itemType">Item Type</label>
+            <select id="itemType" name="itemType" required>
+                <option value="Electronics">Electronics</option>
+                <option value="Furniture">Furniture</option>
+                <option value="Clothing">Clothing</option>
+                <option value="Stationary">Stationary</option>
+                <option value="Books">Books</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="price">Price (₹):</label>
+            <input type="number" step="0.01" id="price" name="price" required />
+
+            <label for="image_url">Image URL</label>
+            <input type="text" id="image_url" name="image_url" placeholder="Enter image URL" required>
+            <div class="help-text">Please provide a direct image URL (ending with .jpg, .png, etc.). Right-click on an image and select "Copy image address".</div>
+
+            <label for="contactInfo">Contact Information</label>
+            <input type="text" id="contactInfo" name="contactInfo" required>
+
+            <label for="paymentMethod">Preferred Payment Method</label>
+            <select id="paymentMethod" name="paymentMethod" required>
+                <option value="upi">UPI</option>
+                <option value="bank_transfer">Bank Transfer</option>
+                <option value="cash">Cash</option>
+            </select>
+
+            <!-- UPI Fields -->
+            <div id="upiFields" style="display: none;">
+                <label for="upiId">UPI ID</label>
+                <input type="text" id="upiId" name="upiId">
+            </div>
+
+            <!-- Bank Fields -->
+            <div id="bankFields" style="display: none;">
+                <label for="accountNumber">Bank Account Number</label>
+                <input type="text" id="accountNumber" name="accountNumber">
+
+                <label for="bankName">Bank Name</label>
+                <input type="text" id="bankName" name="bankName">
+            </div>
+
+            <!-- Cash Message -->
+            <div id="cashMessage" style="display: none;">
+                Please collect your cash when the item is sold.
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        // Check for error parameters in URL
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const error = urlParams.get('error');
+            
+            if (error === 'invalid_image_url') {
+                alert("Please provide a direct image URL (ending with .jpg, .png, etc.). Right-click on an image and select 'Copy image address'.");
+            }
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const paymentMethodSelect = document.getElementById("paymentMethod");
+            const upiFields = document.getElementById("upiFields");
+            const bankFields = document.getElementById("bankFields");
+            const cashMessage = document.getElementById("cashMessage");
+
+            const upiIdInput = document.getElementById("upiId");
+            const accountNumberInput = document.getElementById("accountNumber");
+            const bankNameInput = document.getElementById("bankName");
+
+            function updateFields() {
+                const selected = paymentMethodSelect.value;
+
+                if (selected === "upi") {
+                    upiFields.style.display = "block";
+                    bankFields.style.display = "none";
+                    cashMessage.style.display = "none";
+
+                    upiIdInput.required = true;
+                    accountNumberInput.required = false;
+                    bankNameInput.required = false;
+                } else if (selected === "bank_transfer") {
+                    upiFields.style.display = "none";
+                    bankFields.style.display = "block";
+                    cashMessage.style.display = "none";
+
+                    upiIdInput.required = false;
+                    accountNumberInput.required = true;
+                    bankNameInput.required = true;
+                } else if (selected === "cash") {
+                    upiFields.style.display = "none";
+                    bankFields.style.display = "none";
+                    cashMessage.style.display = "block";
+
+                    upiIdInput.required = false;
+                    accountNumberInput.required = false;
+                    bankNameInput.required = false;
+                }
+            }
+
+            updateFields();
+            paymentMethodSelect.addEventListener("change", updateFields);
+
+// Replace the current form submission code with this:
+// Just replace the form submit event listener in uploaditem.html with this code:
+
+const form = document.getElementById("uploadForm");
+form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    console.log("Form submission started");
+
+    // Basic image URL validation on client side
+    const imageUrl = document.getElementById("image_url").value;
+    const imageRegex = /.*\.(jpg|jpeg|png|gif|bmp|webp)($|\?.*)/i;
+    
+    if (!imageRegex.test(imageUrl)) {
+        alert("Please provide a direct image URL ending with .jpg, .png, etc. Right-click on an image and select 'Copy image address'.");
+        return;
+    }
+
+    const formData = new FormData(form);
+    
+    // Get user email from session storage
+    const userEmail = sessionStorage.getItem('userEmail') || localStorage.getItem('userEmail');
+    
+    if (!userEmail) {
+        // Hard-code the user email for K3 if not in session
+        formData.append("username", "23B81A05K3@cvr.ac.in");
+        console.log("Using default user email: 23B81A05K3@cvr.ac.in");
+    } else {
+        formData.append("username", userEmail);
+        console.log("Using user email from session:", userEmail);
+    }
+    
+    try {
+        console.log("Sending fetch request to server");
+        
+        // Log form data for debugging
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+
+        const response = await fetch("ItemUploadServlet", {
+            method: "POST",
+            body: formData
+        });
+        
+        console.log("Response status:", response.status);
+        
+        // Read response text for any error messages
+        const responseText = await response.text();
+        console.log("Response text:", responseText);
+        
+        if (response.ok) {
+            alert("Upload successful!");
+            window.location.href = "marketing.html";
+        } else {
+            alert("Upload failed. Server returned: " + responseText);
+        }
+    } catch (err) {
+        console.error("Fetch error:", err);
+        alert("An error occurred during submission: " + err.message);
+    }
+});
+        });
+    </script>
+</body>
+</html>

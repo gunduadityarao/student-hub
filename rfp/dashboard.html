@@ -1,0 +1,78 @@
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Hub - Dashboard</title>
+  
+  <link rel="stylesheet" href="styles.css">
+  
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">Student Hub</div>
+      <nav class="sidebar-menu">
+        <a href="home.html">Home Page</a>
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="marketing.html">Marketing</a>
+        <a href="contact.html">Contact Us</a>
+      </nav>
+    </aside>
+
+    <!-- Toggle Button -->
+    <button class="toggle-btn" id="toggle-btn">☰</button>
+
+    <!-- Main Content -->
+    <div class="main-content" id="main-content">
+      <header>
+        <h1 class="main-title">Student Dashboard</h1>
+      </header>
+      <main>
+        <section id="overview">
+          <div class="card">
+            <h2>Your Profile</h2>
+            <p><i class="fas fa-user-circle"></i> View and update your profile details</p>
+            <button>View Profile</button>
+          </div>
+          <div class="card">
+            <h2>Your Marketplace</h2>
+            <p><i class="fas fa-shopping-cart"></i> Buy and sell items in the student marketplace</p>
+            <button>Go to Marketplace</button>
+          </div>
+        </section>
+
+        <section id="activity">
+          <h2>Recent Activity</h2>
+          <ul>
+            <li>Sold a textbook for $20</li>
+            <li>Purchased a laptop stand</li>
+            <li>Updated profile information</li>
+            <li>Created a new listing for used furniture</li>
+          </ul>
+        </section>
+
+        <section id="notifications">
+          <h2>Notifications</h2>
+          <div class="notification">
+            <p><i class="fas fa-bell"></i> You have a new message from a potential buyer</p>
+          </div>
+          <div class="notification">
+            <p><i class="fas fa-bell"></i> A new event is happening this week!</p>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+

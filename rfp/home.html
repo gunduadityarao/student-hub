@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toggleable Sidebar</title>
+  
+  <link rel="stylesheet" href="styles.css">
+ 
+  <style>
+    /* Remove the profile styles */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    /* Logout button styles */
+    .logout-btn {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 18px;
+      color: white;
+      background-color: red;
+      padding: 8px 12px;
+      border-radius: 5px;
+    }
+
+    .logout-btn i {
+      font-size: 24px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">Student Hub</div>
+      <nav class="sidebar-menu">
+        <a href="home.html">Home Page</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="marketing.html">Marketing</a>
+        <a href="contact.html">Contact Us</a>
+      </nav>
+    </aside>
+
+    <!-- Toggle Button -->
+    <button class="toggle-btn" id="toggle-btn">☰</button>
+
+    <!-- Main Content -->
+    <div class="main-content" id="main-content">
+      <header>
+        <h1 class="main-title">Welcome to the Student Hub</h1>
+        <!-- Logout Button -->
+        <div class="logout-btn" id="logout-btn">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </div>
+      </header>
+      <main>
+        <section id="abstract">
+          <p class="abstract-text">
+              The Student Hub Project is designed to create a centralized digital platform for students to facilitate a range of activities, primarily focused on buying, selling, and accessing essential services. The hub serves as a marketplace where students can list items for sale, such as textbooks, electronics, furniture, and other student-related goods, as well as search for items they wish to purchase. This peer-to-peer marketplace encourages sustainable consumption, making it easier for students to find affordable items while reducing waste by promoting second-hand goods.
+            <br><br>
+            In addition to its marketplace, the Student Hub offers a variety of services tailored to student needs, including accommodation listings and event updates. The platform also provides opportunities for students to connect with one another, enabling community-driven recommendations and reviews on various services.
+            <br><br>
+            The goal of the project is to create a more connected and supportive student community, where users can find resources and opportunities, exchange goods, and offer assistance in a collaborative environment. By providing a single, easy-to-use platform for a wide range of services, the Student Hub aims to improve students' quality of life, reduce unnecessary expenses, and promote a sense of belonging and cooperation within the student body..
+          </p>
+        </section>
+        <section id="home">
+          <h2>Home Page</h2>
+          <p>Explore the marketplace and services available for students.</p>
+        </section>
+        <section id="dashboard">
+          <h2>Dashboard</h2>
+          <p>Access your personalized student dashboard.</p>
+        </section>
+        <section id="marketing">
+          <h2>Marketing</h2>
+          <p>Learn about our latest marketing campaigns.</p>
+        </section>
+        <section id="contact">
+          <h2>Contact Us</h2>
+          <p>Feel free to reach out for support or inquiries!</p>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("logout-btn").addEventListener("click", function () {
+      alert("Logging out...");
+      window.location.href = "login.html"; // Redirect to login page
+    });
+  </script>
+</body>
+</html>

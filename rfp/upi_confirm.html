@@ -1,0 +1,80 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm UPI Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .confirmation-container {
+            background-color: white;
+            color: black;
+            padding: 40px;
+            border-radius: 12px;
+            width: 800px;
+            height: 300px;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .confirm-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 30%;
+            margin-top: 20px;
+        }
+
+        .confirm-btn:hover {
+            background-color: #218838;
+        }
+
+        .return-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+	    justify-content:space-between;
+            width: 40%;
+            margin-top: 20px;
+        }
+
+        .return-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="confirmation-container">
+    <h2>Payment Confirmation</h2>
+    <p>Please proceed to pay to the following UPI ID:</p>
+    <h3 id="username">John Doe</h3>
+    <p id="upi-id">example@upi</p>
+    <button class="confirm-btn" onclick="alert('waiting for the user to confirm')">Sent</button>
+    <button class="return-btn" onclick="window.location.href='marketing.html'">Return to Marketing Page</button>
+</div>
+
+</body>
+</html>
